@@ -1,6 +1,6 @@
 package otelrezervasyon;
 
-public class Room {
+public abstract class Room implements Reservable {
 
     private int roomNumber;
     private double basePrice;
@@ -26,5 +26,21 @@ public class Room {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    // Polimorfizm için: her oda tipi kendi fiyatını hesaplayacak
+    public abstract double calculatePrice(int nights);
+
+    @Override
+    public Reservation makeReservation(Customer customer, int nights, int reservationId) {
+        if (!available) {
+            // Oda uygun değilse rezervasyon yapılamaz
+            return null;
+        }
+
+        double totalPrice = calculatePrice(nights);
+        Reservation reservation = new Reservation(reservationId, this, customer, nights, totalPrice);
+        this.available = false; // oda artık dolu
+        return reservation;
     }
 }
