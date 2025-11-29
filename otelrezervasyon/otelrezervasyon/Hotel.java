@@ -30,4 +30,27 @@ public class Hotel {
     public List<Reservation> getReservations() {
         return reservations;
     }
+
+    // 🔹 دالة جديدة: ترجع الغرف المتاحة فقط
+    public List<Room> getAvailableRooms() {
+        List<Room> availableRooms = new ArrayList<>();
+        for (Room room : rooms) {
+            if (room.isAvailable()) {
+                availableRooms.add(room);
+            }
+        }
+        return availableRooms;
+    }
+
+    // 🔹 دالة مساعدة: للبحث عن غرفة حسب رقمها
+    public Room findRoomByNumber(int roomNumber) {
+        for (Room room : rooms) {
+            if (room.getRoomNumber() == roomNumber) {
+                return room;
+            }
+        }
+        return null;
+    }
+
+    // 🔹 لاحقًا سنضيف هنا منطق إنشاء حجز، إلغاء حجز، إلخ
 }
