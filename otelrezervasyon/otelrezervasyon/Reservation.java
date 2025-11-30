@@ -53,8 +53,8 @@ public class Reservation {
         }
     }
 
-    // 🔹 İleride detaylı gösterim için kullanışlı olacak
-    public String getDetailsInTurkish() {
+    // 🔹 Detaylı rezervasyon bilgisi (ad: getdetails)
+    public String getdetails() {
         String status = cancelled ? "İptal edildi" : "Aktif";
         return "Rezervasyon ID: " + reservationId +
                 "\nMüşteri: " + customer.getName() +

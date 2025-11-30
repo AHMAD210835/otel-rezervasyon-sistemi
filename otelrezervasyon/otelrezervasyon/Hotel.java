@@ -87,4 +87,15 @@ public class Hotel {
         // Bu ID'ye sahip rezervasyon bulunamadı
         return false;
     }
+    
+    // 🔹 Rezervasyon ID'ye göre rezervasyon bul
+    public Reservation findReservationById(int reservationId) {
+        for (Reservation reservation : reservations) {
+            if (reservation.getReservationId() == reservationId) {
+                return reservation;
+            }
+        }
+        return null;
+    }
+
 }
