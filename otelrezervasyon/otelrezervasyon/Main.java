@@ -21,9 +21,7 @@ public class Main {
             System.out.println("=== Otel Rezervasyon Sistemi Menüsü ===");
             System.out.println("1) Boş odaları listele");
             System.out.println("2) Oda rezervasyonu yap");
-            // İleriki günlerde:
-            // 3) Rezervasyon iptal et
-            // 4) Rezervasyon detaylarını göster
+            System.out.println("3) Rezervasyon iptal et");
             System.out.println("0) Çıkış");
             System.out.print("Lütfen bir seçenek seçin: ");
 
@@ -36,6 +34,9 @@ public class Main {
                     break;
                 case 2:
                     handleReservation(hotel, scanner);
+                    break;
+                case 3:
+                    handleCancellation(hotel, scanner);
                     break;
                 case 0:
                     System.out.println("Program sonlandırılıyor. İyi günler!");
@@ -139,6 +140,22 @@ public class Main {
             System.out.println("Müşteri: " + reservation.getCustomer().getName());
             System.out.println("Gece sayısı: " + reservation.getNights());
             System.out.println("Toplam fiyat: " + reservation.getTotalPrice() + " TL");
+        }
+    }
+    
+    // 🔹 Rezervasyon iptali akışı
+    private static void handleCancellation(Hotel hotel, Scanner scanner) {
+
+        System.out.print("İptal etmek istediğiniz rezervasyon ID'sini girin: ");
+        int reservationId = scanner.nextInt();
+        scanner.nextLine(); // satır sonunu temizle
+
+        boolean success = hotel.cancelReservation(reservationId);
+
+        if (success) {
+            System.out.println("Rezervasyon başarıyla iptal edildi.");
+        } else {
+            System.out.println("Rezervasyon bulunamadı veya zaten iptal edilmiş.");
         }
     }
 }

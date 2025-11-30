@@ -71,4 +71,20 @@ public class Hotel {
 
         return reservation;
     }
+
+    // 🔹 Rezervasyon ID'ye göre rezervasyon iptal et
+    public boolean cancelReservation(int reservationId) {
+        for (Reservation reservation : reservations) {
+            if (reservation.getReservationId() == reservationId) {
+                if (reservation.isCancelled()) {
+                    // Zaten iptal edilmiş
+                    return false;
+                }
+                reservation.cancel();
+                return true;
+            }
+        }
+        // Bu ID'ye sahip rezervasyon bulunamadı
+        return false;
+    }
 }

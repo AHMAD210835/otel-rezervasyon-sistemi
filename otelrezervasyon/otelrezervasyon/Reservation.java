@@ -41,4 +41,26 @@ public class Reservation {
     public boolean isCancelled() {
         return cancelled;
     }
+
+    // 🔹 rezervasyonu iptal et
+    public void cancel() {
+        if (!cancelled) {
+            this.cancelled = true;
+            // Oda yeniden müsait hale getiriliyor
+            if (room != null) {
+                room.setAvailable(true);
+            }
+        }
+    }
+
+    // 🔹 İleride detaylı gösterim için kullanışlı olacak
+    public String getDetailsInTurkish() {
+        String status = cancelled ? "İptal edildi" : "Aktif";
+        return "Rezervasyon ID: " + reservationId +
+                "\nMüşteri: " + customer.getName() +
+                "\nOda numarası: " + room.getRoomNumber() +
+                "\nGece sayısı: " + nights +
+                "\nToplam fiyat: " + totalPrice + " TL" +
+                "\nDurum: " + status;
+    }
 }
