@@ -8,6 +8,7 @@ public class Hotel {
     private String name;
     private List<Room> rooms;
     private List<Reservation> reservations;
+    private int nextReservationId = 1; // 🔹 rezervasyon ID'leri için sayaç
 
     public Hotel(String name) {
         this.name = name;
@@ -31,7 +32,7 @@ public class Hotel {
         return reservations;
     }
 
-    // 🔹 دالة جديدة: ترجع الغرف المتاحة فقط
+    // 🔹 Boş odaları döndürür
     public List<Room> getAvailableRooms() {
         List<Room> availableRooms = new ArrayList<>();
         for (Room room : rooms) {
@@ -42,7 +43,7 @@ public class Hotel {
         return availableRooms;
     }
 
-    // 🔹 دالة مساعدة: للبحث عن غرفة حسب رقمها
+    // 🔹 Oda numarasına göre oda bulur
     public Room findRoomByNumber(int roomNumber) {
         for (Room room : rooms) {
             if (room.getRoomNumber() == roomNumber) {
@@ -52,5 +53,22 @@ public class Hotel {
         return null;
     }
 
-    // 🔹 لاحقًا سنضيف هنا منطق إنشاء حجز، إلغاء حجز، إلخ
+    // 🔹 Yeni rezervasyon oluşturur
+    public Reservation makeReservation(Room room, Customer customer, int nights) {
+        if (room == null) {
+            return null;
+        }
+        if (!room.isAvailable()) {
+            return null;
+        }
+
+        int reservationId = nextReservationId++;
+        Reservation reservation = room.makeReservation(customer, nights, reservationId);
+
+        if (reservation != null) {
+            reservations.add(reservation);
+        }
+
+        return reservation;
+    }
 }
