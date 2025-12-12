@@ -37,13 +37,11 @@ public class HotelReservationGUI extends JFrame {
         JButton cancelReservationButton = new JButton("Rezervasyon iptal et");
         JButton showDetailsButton = new JButton("Rezervasyon detaylarını göster");
 
-        // Şimdilik butonlara sadece basit bilgi mesajları ekleyelim
-        listRoomsButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this,
-                        "Boş odaları listeleme özelliği GUI'de henüz uygulanmadı.",
-                        "Bilgi",
-                        JOptionPane.INFORMATION_MESSAGE)
-        );
+        listRoomsButton.addActionListener(e -> {
+            RoomListWindow window = new RoomListWindow();
+            window.showRooms(hotel.getAvailableRooms());
+            window.setVisible(true);
+        });
 
         makeReservationButton.addActionListener(e ->
                 JOptionPane.showMessageDialog(this,
