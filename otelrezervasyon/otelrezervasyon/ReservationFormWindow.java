@@ -5,6 +5,8 @@ import java.awt.*;
 
 public class ReservationFormWindow extends JFrame {
 
+    private Hotel hotel;
+
     private JTextField roomNumberField;
     private JTextField customerNameField;
     private JTextField idNumberField;
@@ -12,7 +14,8 @@ public class ReservationFormWindow extends JFrame {
 
     private JButton reserveButton;
 
-    public ReservationFormWindow() {
+    public ReservationFormWindow(Hotel hotel) {
+        this.hotel = hotel;
         initializeGUI();
     }
 
@@ -49,17 +52,109 @@ public class ReservationFormWindow extends JFrame {
         mainPanel.add(formPanel, BorderLayout.CENTER);
 
         reserveButton = new JButton("Rezervasyon yap");
-        reserveButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this,
-                        "Rezervasyon oluşturma mantığı henüz uygulanmadı.",
-                        "Bilgi",
-                        JOptionPane.INFORMATION_MESSAGE)
-        );
+        reserveButton.addActionListener(e -> handleMakeReservation());
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         bottomPanel.add(reserveButton);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         setContentPane(mainPanel);
+    }
+
+    private void handleMakeReservation() {
+        //  Alanları oku
+        String roomText = roomNumberField.getText().trim();
+        String name = customerNameField.getText().trim();
+        String idNumber = idNumberField.getText().trim();
+        String nightsText = nightsField.getText().trim();
+
+        //   doğrulamalar
+        if (roomText.isEmpty() || name.isEmpty() || idNumber.isEmpty() || nightsText.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Lütfen tüm alanları doldurun.",
+                    "Hata",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int roomNumber;
+        int nights;
+
+        try {
+            roomNumber = Integer.parseInt(roomText);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Oda numarası sayı olmalıdır.",
+                    "Hata",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            nights = Integer.parseInt(nightsText);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Gece sayısı sayı olmalıdır.",
+                    "Hata",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (nights <= 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Gece sayısı 0 veya negatif olamaz.",
+                    "Hata",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 3) Odayı bul
+        Room room = hotel.findRoomByNumber(roomNumber);
+        if (room == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Bu oda numarasına sahip bir oda bulunamadı.",
+                    "Hata",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!room.isAvailable()) {
+            JOptionPane.showMessageDialog(this,
+                    "Seçilen oda şu anda müsait değil.",
+                    "Hata",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        //  Rezervasyonu oluşturma
+        Customer customer = new Customer(name, idNumber);
+        Reservation reservation = hotel.makeReservation(room, customer, nights);
+
+        if (reservation == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Rezervasyon oluşturulurken bir hata oluştu.",
+                    "Hata",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        //  Başarı mesajı
+        JOptionPane.showMessageDialog(this,
+                "Rezervasyon başarıyla oluşturuldu!\n\n" +
+                        "Rezervasyon ID: " + reservation.getReservationId() + "\n" +
+                        "Oda numarası: " + reservation.getRoom().getRoomNumber() + "\n" +
+                        "Müşteri: " + reservation.getCustomer().getName() + "\n" +
+                        "Gece sayısı: " + reservation.getNights() + "\n" +
+                        "Toplam fiyat: " + reservation.getTotalPrice() + " TL",
+                "Başarılı",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        // alanlari temizleme
+        roomNumberField.setText("");
+        customerNameField.setText("");
+        idNumberField.setText("");
+        nightsField.setText("");
+
+        
     }
 }
