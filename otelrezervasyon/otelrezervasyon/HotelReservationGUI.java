@@ -48,12 +48,11 @@ public class HotelReservationGUI extends JFrame {
             window.setVisible(true);
         });
 
-        cancelReservationButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this,
-                        "Rezervasyon iptali özelliği GUI'de henüz uygulanmadı.",
-                        "Bilgi",
-                        JOptionPane.INFORMATION_MESSAGE)
-        );
+        cancelReservationButton.addActionListener(e -> {
+            CancelReservationWindow window = new CancelReservationWindow(hotel);
+            window.setVisible(true);
+        });
+
 
         showDetailsButton.addActionListener(e ->
                 JOptionPane.showMessageDialog(this,
