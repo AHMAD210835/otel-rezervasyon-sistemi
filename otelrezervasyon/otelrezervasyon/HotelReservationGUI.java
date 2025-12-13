@@ -53,13 +53,10 @@ public class HotelReservationGUI extends JFrame {
             window.setVisible(true);
         });
 
-
-        showDetailsButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this,
-                        "Rezervasyon detaylarını gösterme özelliği GUI'de henüz uygulanmadı.",
-                        "Bilgi",
-                        JOptionPane.INFORMATION_MESSAGE)
-        );
+        showDetailsButton.addActionListener(e -> {
+            ReservationDetailsWindow window = new ReservationDetailsWindow(hotel);
+            window.setVisible(true);
+        });
 
         buttonPanel.add(listRoomsButton);
         buttonPanel.add(makeReservationButton);
@@ -76,9 +73,9 @@ public class HotelReservationGUI extends JFrame {
         setContentPane(mainPanel);
     }
 
-    // GUI'yi başlatmak için yardımcı metot
+    // GUI'yi başlatmak icin
     public static void main(String[] args) {
-        // Örnek otel ve odalar oluşturalım (konsoldaki createSampleHotel ile benzer)
+        
         Hotel hotel = new Hotel("ChatGPT Otel");
         hotel.addRoom(new StandardRoom(101, 1000));
         hotel.addRoom(new StandardRoom(102, 1000));
