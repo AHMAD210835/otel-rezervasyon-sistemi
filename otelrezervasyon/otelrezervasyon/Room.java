@@ -19,6 +19,10 @@ public abstract class Room implements Reservable {
     public double getBasePrice() {
         return basePrice;
     }
+    
+    public String getRoomType() {
+        return "Oda";
+    }
 
     public boolean isAvailable() {
         return available;

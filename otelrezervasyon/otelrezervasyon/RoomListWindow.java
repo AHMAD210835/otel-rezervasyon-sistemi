@@ -46,11 +46,13 @@ public class RoomListWindow extends JFrame {
         sb.append("Boş odalar:\n\n");
 
         for (Room room : rooms) {
-            sb.append("Oda numarası: ")
-              .append(room.getRoomNumber())
-              .append(" | Gecelik fiyat: ")
-              .append(room.getBasePrice())
-              .append(" TL\n");
+        	sb.append("Oda tipi: ")
+        	  .append(room.getRoomType())
+        	  .append(" | Oda numarası: ")
+        	  .append(room.getRoomNumber())
+        	  .append(" | Gecelik fiyat: ")
+        	  .append(room.getBasePrice())
+        	  .append(" TL\n");
         }
 
         textArea.setText(sb.toString());

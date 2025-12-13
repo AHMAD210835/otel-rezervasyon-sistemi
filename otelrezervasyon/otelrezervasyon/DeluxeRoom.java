@@ -11,4 +11,8 @@ public class DeluxeRoom extends Room {
         // Deluxe oda: standart fiyattan %50 daha pahalı
         return getBasePrice() * nights * 1.5;
     }
+    @Override
+    public String getRoomType() {
+        return "Deluxe Oda";
+    }
 }

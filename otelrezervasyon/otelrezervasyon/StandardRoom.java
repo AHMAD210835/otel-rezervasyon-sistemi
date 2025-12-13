@@ -11,4 +11,8 @@ public class StandardRoom extends Room {
         // Standart oda: sadece gecelik fiyat * gece sayısı
         return getBasePrice() * nights;
     }
+    @Override
+    public String getRoomType() {
+        return "Standart Oda";
+    }
 }

@@ -58,6 +58,7 @@ public class Reservation {
         String status = cancelled ? "İptal edildi" : "Aktif";
         return "Rezervasyon ID: " + reservationId +
                 "\nMüşteri: " + customer.getName() +
+                "\nOda tipi: " + room.getRoomType() +
                 "\nOda numarası: " + room.getRoomNumber() +
                 "\nGece sayısı: " + nights +
                 "\nToplam fiyat: " + totalPrice + " TL" +
