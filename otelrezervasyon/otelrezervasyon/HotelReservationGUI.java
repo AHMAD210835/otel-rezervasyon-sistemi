@@ -2,6 +2,8 @@ package otelrezervasyon;
 
 import javax.swing.*;
 import java.awt.*;
+import com.formdev.flatlaf.FlatLightLaf;
+
 
 public class HotelReservationGUI extends JFrame {
 
@@ -75,8 +77,13 @@ public class HotelReservationGUI extends JFrame {
 
     // GUI'yi başlatmak icin
     public static void main(String[] args) {
+        try {
+            FlatLightLaf.setup();
+        } catch (Exception ex) {
+            System.err.println("FlatLaf başlatılamadı");
+        }
         
-        Hotel hotel = new Hotel("ChatGPT Otel");
+        Hotel hotel = new Hotel("AREL Otel");
         hotel.addRoom(new StandardRoom(101, 1000));
         hotel.addRoom(new StandardRoom(102, 1000));
         hotel.addRoom(new DeluxeRoom(201, 1500));
