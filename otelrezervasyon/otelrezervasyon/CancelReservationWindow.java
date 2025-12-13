@@ -5,13 +5,16 @@ import java.awt.*;
 
 public class CancelReservationWindow extends JFrame {
 
+    private Hotel hotel;
+
     private JTextField reservationIdField;
     private JButton cancelButton;
 
-    public CancelReservationWindow() {
+    public CancelReservationWindow(Hotel hotel) {
+        this.hotel = hotel;
         initializeGUI();
     }
-    // sadece gecici mesaj ekledim
+
     private void initializeGUI() {
         setTitle("Rezervasyon İptali");
         setSize(400, 200);
@@ -32,17 +35,51 @@ public class CancelReservationWindow extends JFrame {
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
         cancelButton = new JButton("İptal et");
-        cancelButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this,
-                        "Rezervasyon iptal etme mantığı henüz uygulanmadı.",
-                        "Bilgi",
-                        JOptionPane.INFORMATION_MESSAGE)
-        );
+        cancelButton.addActionListener(e -> handleCancelReservation());
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         bottomPanel.add(cancelButton);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         setContentPane(mainPanel);
+    }
+
+    private void handleCancelReservation() {
+        String idText = reservationIdField.getText().trim();
+
+        if (idText.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Lütfen rezervasyon ID girin.",
+                    "Hata",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int reservationId;
+
+        try {
+            reservationId = Integer.parseInt(idText);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Rezervasyon ID sayı olmalıdır.",
+                    "Hata",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        boolean success = hotel.cancelReservation(reservationId);
+
+        if (success) {
+            JOptionPane.showMessageDialog(this,
+                    "Rezervasyon başarıyla iptal edildi.",
+                    "Başarılı",
+                    JOptionPane.INFORMATION_MESSAGE);
+            dispose(); // pencereyi kapat
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Rezervasyon bulunamadı veya zaten iptal edilmiş.",
+                    "Bilgi",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 }
