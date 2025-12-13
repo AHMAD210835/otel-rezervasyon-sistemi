@@ -5,11 +5,14 @@ import java.awt.*;
 
 public class ReservationDetailsWindow extends JFrame {
 
+    private Hotel hotel;
+
     private JTextField reservationIdField;
     private JButton showButton;
     private JTextArea detailsArea;
 
-    public ReservationDetailsWindow() {
+    public ReservationDetailsWindow(Hotel hotel) {
+        this.hotel = hotel;
         initializeGUI();
     }
 
@@ -33,12 +36,7 @@ public class ReservationDetailsWindow extends JFrame {
         inputPanel.add(reservationIdField);
 
         showButton = new JButton("Göster");
-        showButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this,
-                        "Detay gösterme mantığı henüz uygulanmadı.",
-                        "Bilgi",
-                        JOptionPane.INFORMATION_MESSAGE)
-        );
+        showButton.addActionListener(e -> handleShowDetails());
 
         topPanel.add(inputPanel, BorderLayout.CENTER);
         topPanel.add(showButton, BorderLayout.EAST);
@@ -50,11 +48,46 @@ public class ReservationDetailsWindow extends JFrame {
         detailsArea.setFont(new Font("Arial", Font.PLAIN, 14));
 
         JScrollPane scrollPane = new JScrollPane(detailsArea);
+        scrollPane.setPreferredSize(new Dimension(480, 240));
         mainPanel.add(scrollPane, BorderLayout.SOUTH);
 
-        // Scroll alanının düzgün görünmesi için
-        scrollPane.setPreferredSize(new Dimension(480, 240));
-
         setContentPane(mainPanel);
+    }
+
+    private void handleShowDetails() {
+        String idText = reservationIdField.getText().trim();
+
+        if (idText.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Lütfen rezervasyon ID girin.",
+                    "Hata",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int reservationId;
+        try {
+            reservationId = Integer.parseInt(idText);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Rezervasyon ID sayı olmalıdır.",
+                    "Hata",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Reservation reservation = hotel.findReservationById(reservationId);
+
+        if (reservation == null) {
+            detailsArea.setText("");
+            JOptionPane.showMessageDialog(this,
+                    "Bu ID ile bir rezervasyon bulunamadı.",
+                    "Bilgi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // ayrıntıları göster
+        detailsArea.setText(reservation.getdetails());
     }
 }
